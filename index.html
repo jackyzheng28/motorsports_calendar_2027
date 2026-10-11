@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2027 Motorsports Calendar • Week-by-Week Interactive Guide</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="logo-badge">🏁 2027</div>
+        <div class="title-group">
+          <h1>Motorsports Calendar</h1>
+          <p>Global Week-by-Week Racing Master Schedule • 18 Series • 149 Events</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn" id="btnThemeToggle" title="Toggle Light/Dark Mode">🌓 Theme</button>
+        <button class="btn" id="btnExportICS" title="Download iCalendar file for Google/Apple Calendar">📅 Export .ics</button>
+        <button class="btn" id="btnExportCSV" title="Export schedule to CSV">📄 Export CSV</button>
+        <button class="btn btn-primary" id="btnJumpNext" title="Jump to next upcoming race week">⏩ Next Race</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Nav Tabs -->
+  <nav class="nav-tabs" id="navTabs">
+    <button class="tab-btn active" data-view="spotlight">📅 Week Spotlight</button>
+    <button class="tab-btn" data-view="feed">📜 Weekly Timeline</button>
+    <button class="tab-btn" data-view="matrix">📊 Master Excel Matrix</button>
+    <button class="tab-btn" data-view="championships">🏎️ Championships</button>
+    <button class="tab-btn" data-view="clashes">🔥 Super Weekends</button>
+    <button class="tab-btn" data-view="analytics">📈 Season Analytics</button>
+  </nav>
+
+  <!-- Quick Statistics Ribbon -->
+  <section class="stats-ribbon">
+    <div class="stats-container">
+      <div class="stat-pill">
+        <span>Total Weeks:</span>
+        <strong>52</strong>
+      </div>
+      <div class="stat-pill">
+        <span>Active Race Weeks:</span>
+        <strong>47</strong>
+      </div>
+      <div class="stat-pill">
+        <span>Total Race Events:</span>
+        <strong>149</strong>
+      </div>
+      <div class="stat-pill">
+        <span>Formula 1 Grands Prix:</span>
+        <strong>24</strong> (10 Sprints)
+      </div>
+      <div class="stat-pill">
+        <span>24h Enduros:</span>
+        <strong>4</strong> (Le Mans, Spa, N24, Daytona)
+      </div>
+      <div class="stat-pill">
+        <span>Super Weekends (5+ Series):</span>
+        <strong>10</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search & Filter Controls -->
+  <div class="filter-bar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearch" placeholder="Search circuits, cities, countries, series, or keywords (e.g. Monaco, Spa, Sprint, 24h)...">
+    </div>
+
+    <select class="select-filter" id="seriesFilter">
+      <option value="ALL">All Championships (18 Series)</option>
+      <option value="Formula 1">Formula 1 (F1)</option>
+      <option value="Formula E">Formula E (FE)</option>
+      <option value="FIA WEC">FIA WEC (World Endurance)</option>
+      <option value="ELMS">ELMS (European Le Mans)</option>
+      <option value="Asian Le Mans">Asian Le Mans Series</option>
+      <option value="IGTC">IGTC (Intercontinental GT)</option>
+      <option value="GTWCE">GT World Challenge Europe</option>
+      <option value="GTWC Asia">GT World Challenge Asia</option>
+      <option value="IMSA">IMSA SportsCar Championship</option>
+      <option value="DTM">DTM (German Touring Cars)</option>
+      <option value="WRC">WRC (World Rally Championship)</option>
+      <option value="FRECA">FRECA (Formula Regional Europe)</option>
+      <option value="FROT">FROT (Formula Regional Oceania)</option>
+      <option value="FWS">Formula Winter Series</option>
+      <option value="Italian F4">Italian F4 / Euro 4</option>
+      <option value="Spanish F4">Spanish F4</option>
+      <option value="German F4">German F4 (ADAC)</option>
+      <option value="Macau GP">Macau Grand Prix</option>
+    </select>
+
+    <select class="select-filter" id="monthFilter">
+      <option value="ALL">All Months (Jan – Dec 2027)</option>
+      <option value="1">January (Weeks 1-4)</option>
+      <option value="2">February (Weeks 5-8)</option>
+      <option value="3">March (Weeks 9-13)</option>
+      <option value="4">April (Weeks 14-17)</option>
+      <option value="5">May (Weeks 18-22)</option>
+      <option value="6">June (Weeks 23-26)</option>
+      <option value="7">July (Weeks 27-31)</option>
+      <option value="8">August (Weeks 32-35)</option>
+      <option value="9">September (Weeks 36-39)</option>
+      <option value="10">October (Weeks 40-44)</option>
+      <option value="11">November (Weeks 45-48)</option>
+      <option value="12">December (Weeks 49-52)</option>
+    </select>
+
+    <select class="select-filter" id="specialFilter">
+      <option value="ALL">All Event Types</option>
+      <option value="SPRINT">⚡ Sprint Weekends Only</option>
+      <option value="ENDURANCE_24H">⏱️ 24-Hour Classics Only</option>
+      <option value="DOUBLE_HEADER">✌️ Double Headers Only</option>
+      <option value="SUPPORT_F3">🟢 F1 with F3 Support (Green)</option>
+      <option value="SUPPORT_F2">🔵 F1 with F2 Support (Blue)</option>
+      <option value="MEGA">🔥 Super Weekends (4+ Series)</option>
+    </select>
+  </div>
+
+  <!-- Main Views Container -->
+  <main>
+
+    <!-- VIEW 1: WEEK-BY-WEEK SPOTLIGHT -->
+    <div id="viewSpotlight" class="spotlight-view">
+      <!-- Week Navigator -->
+      <div class="week-navigator">
+        <div class="week-nav-top">
+          <div class="nav-arrow-group">
+            <button class="btn" id="btnPrevWeek" title="Previous Week (Left Arrow)">◀ Prev Week</button>
+            <button class="btn" id="btnNextWeek" title="Next Week (Right Arrow)">Next Week ▶</button>
+          </div>
+
+          <div class="week-headline">
+            <h2 id="currentWeekTitle">Week 18</h2>
+            <div class="date-badge" id="currentWeekDate">Apr 30 – May 02, 2027</div>
+          </div>
+
+          <div class="quick-jump-pills">
+            <span class="refactored-inline-01">Jump to:</span>
+            <button class="pill-btn" data-week="1">W1 (Jan)</button>
+            <button class="pill-btn" data-week="5">W5 (Daytona)</button>
+            <button class="pill-btn" data-week="11">W11 (F1 Opener)</button>
+            <button class="pill-btn" data-week="18">W18 (Miami)</button>
+            <button class="pill-btn" data-week="24">W24 (Le Mans)</button>
+            <button class="pill-btn" data-week="26">W26 (24H Spa)</button>
+            <button class="pill-btn" data-week="38">W38 (Monza)</button>
+            <button class="pill-btn" data-week="52">W52 (Abu Dhabi)</button>
+          </div>
+        </div>
+
+        <!-- Range Slider Scrubber -->
+        <div class="scrubber-container">
+          <input type="range" min="1" max="52" value="18" class="week-slider" id="weekScrubber">
+        </div>
+        <div class="scrubber-indicators">
+          <span>Week 1 (Jan 01)</span>
+          <span>Week 13 (Q1 End)</span>
+          <span>Week 26 (Le Mans / Spa)</span>
+          <span>Week 39 (Q3 End)</span>
+          <span>Week 52 (Dec 26)</span>
+        </div>
+      </div>
+
+      <!-- Spotlight Main Card -->
+      <div class="spotlight-card" id="spotlightCard">
+        <div class="spotlight-header">
+          <div class="spotlight-title-area">
+            <h3 id="spotlightHeading">Race Weekend Breakdown</h3>
+            <div class="spotlight-subtitle" id="spotlightSubtitle">6 Championships in Action across 5 Continents</div>
+          </div>
+          <div id="spotlightIntensityTag" class="intensity-tag mega">🔥 Mega Super Weekend (6 Series)</div>
+        </div>
+
+        <!-- Events Grid for this week -->
+        <div class="events-grid" id="spotlightEventsGrid">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Off-week banner placeholder -->
+        <div id="spotlightOffWeekBanner" class="off-week-banner refactored-inline-02">
+          <div class="off-week-icon">🌴</div>
+          <h4>Mid-Season Hiatus / Off Week</h4>
+          <p>No major racing rounds are scheduled in the calendar for this weekend. Teams and drivers are resting, conducting factory prep, or testing.</p>
+        </div>
+      </div>
+
+      <!-- Adjacent Weeks Strip -->
+      <div class="adjacent-strip">
+        <div class="adjacent-card" id="cardPrevWeek">
+          <div class="adjacent-info">
+            <span id="prevWeekLabel">◀ Previous Week</span>
+            <h5 id="prevWeekTitle">Week 17 • Apr 23 – Apr 25</h5>
+          </div>
+          <div class="tag" id="prevWeekCount">3 Series</div>
+        </div>
+
+        <div class="adjacent-card" id="cardNextWeek">
+          <div class="adjacent-info">
+            <span id="nextWeekLabel">Next Week ▶</span>
+            <h5 id="nextWeekTitle">Week 19 • May 07 – May 09</h5>
+          </div>
+          <div class="tag" id="nextWeekCount">6 Series</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: CONTINUOUS TIMELINE FEED -->
+    <div id="viewFeed" class="timeline-view refactored-inline-02">
+      <!-- Populated dynamically -->
+    </div>
+
+    <!-- VIEW 3: MASTER EXCEL MATRIX -->
+    <div id="viewMatrix" class="matrix-view refactored-inline-02">
+      <div class="matrix-toolbar">
+        <div class="refactored-inline-03">
+          📑 Faithful Replica of <code>Calendar of 2027.xlsx</code> (Rows 3–54 • Columns A–R)
+        </div>
+        <div class="refactored-inline-04">
+          <span><span class="refactored-inline-05"></span> Green: F3 Support</span>
+          <span><span class="refactored-inline-06"></span> Blue: F2 Support</span>
+          <span><span class="refactored-inline-07"></span> Orange: GTWCE / ELMS / FRECA</span>
+          <span><span class="refactored-inline-08"></span> Grey: WEC / IGTC / German F4</span>
+          <span><span class="refactored-inline-09"></span> Yellow: Spanish F4 / ALMS / FWS</span>
+        </div>
+      </div>
+      <div class="matrix-scroll-wrapper">
+        <table class="calendar-table" id="matrixTable">
+          <!-- Populated dynamically -->
+        </table>
+      </div>
+    </div>
+
+    <!-- VIEW 4: CHAMPIONSHIPS -->
+    <div id="viewChampionships" class="series-view refactored-inline-02">
+      <div class="series-nav-pills" id="seriesNavPills">
+        <!-- Series buttons populated dynamically -->
+      </div>
+      <div class="series-schedule-list" id="seriesScheduleList">
+        <!-- Series rounds list -->
+      </div>
+    </div>
+
+    <!-- VIEW 5: SUPER WEEKENDS (CLASHES) -->
+    <div id="viewClashes" class="clash-view refactored-inline-02">
+      <div class="refactored-inline-10">
+        <h3 class="refactored-inline-11">Super Weekends & Racing Clashes</h3>
+        <p class="refactored-inline-12">Weekends with multiple major championships competing at the same time. Ranked by intensity.</p>
+      </div>
+      <div id="clashWeeksContainer" class="refactored-inline-13">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- VIEW 6: SEASON ANALYTICS -->
+    <div id="viewAnalytics" class="analytics-view refactored-inline-02">
+      <div class="chart-card">
+        <h4>📅 Events per Month</h4>
+        <div id="chartMonthBars"></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>🏎️ Events by Championship</h4>
+        <div id="chartSeriesBars"></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>🏁 Top Circuits by Race Meetings</h4>
+        <div id="chartVenueBars"></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>🌍 Geographic Distribution</h4>
+        <div id="chartRegionBars"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal for Race Detail -->
+  <div class="modal-backdrop" id="eventModal">
+    <div class="modal-card">
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+      <div id="modalContent">
+        <!-- Populated on click -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>2027 Motorsports Calendar • Fully grounded on <code>Calendar of 2027.xlsx</code> • Built for motorsport enthusiasts, race engineers, and paddock followers.</p>
+  </footer>
+
+  <!-- Embedded Data & Interactive Logic -->
+  <script src="js/script.js"></script>
+</body>
+</html>
